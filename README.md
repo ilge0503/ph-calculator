@@ -13,3 +13,7 @@ A program to predict neutralization titration reaction which studied and develop
 ### v1.0.1-alpha
 
 - We can calculate when [OH<sup>-</sup>] remains. (by assuming [H<sup>+</sup>] = -[OH<sup>-</sup>])
+
+### v1.1.0
+
+- We can now calculate weak acids, weak bases and polyprotic acids.
