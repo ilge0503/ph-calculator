@@ -1,5 +1,5 @@
 /*
-version : v1.0.0-alpha
+version : v1.0.1-alpha
 
 MIT License
 
@@ -38,18 +38,34 @@ int main( )
     for (i=0; i<num; i++) scanf(" %lf %lf ", &ka[i], &ha[i]);
     //Get ka and ha values of the solutions participating in the reaction
 
-    while(cost <= -10e-8 || 10e-8 <= cost) {
-        x[0] = (h+(kw/x[1]));
-        for(i=0 ; i<num ; i++) x[0] += (ka[i]*ha[i])/(x[1]+ka[i]);
+    if (h>=0) {
+        while (cost <= -10e-8 || 10e-8 <= cost) {
+            x[0] = (h + (kw / x[1]));
+            for (i = 0; i < num; i++) x[0] += (ka[i] * ha[i]) / (x[1] + ka[i]);
 
-        cost=x[1]-x[0];
-        printf("x = %.15lf | cost = %.15lf\n", x[0], cost);
+            cost = x[1] - x[0];
+            printf("x = %.15lf | cost = %.15lf\n", x[0], cost);
 
-        x[1] = x[0];
+            x[1] = x[0];
+        }
+        printf("pH = %.15lf | cost = %.15lf\n", x[0], cost);
     }
-    //Calculation of acidity by formula
+        //Calculation of acidity by formula (when the initial hydrogen ion concentration is positive)
+    else if (h<0) {
+        x[0] = 1; x[1] = 1;
+        while (cost <= -10e-8 || 10e-8 <= cost) {
+            x[0] = (-h + (kw / x[1]));
+            for (i = 0; i < num; i++) x[0] -= (x[1] * ka[i] * ha[i]) / ((kw / x[1]) + ka[i]);
 
-    printf("x = %.15lf | cost = %.15lf\n", x[0], cost);
+            cost = x[1] - x[0];
+            printf("x = %.15lf | cost = %.15lf\n", x[0], cost);
 
+            x[1] = x[0];
+        }
+        printf("pOH = %.15lf | cost = %.15lf\n", x[0], cost);
+    }
+        //Calculation of acidity by formula (when the initial hydrogen ion concentration is negative)
+    else printf("ERROR : H+ value is not available.");
+    //Print error message when calculation is not possible
     return 0;
 }

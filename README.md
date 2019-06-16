@@ -9,3 +9,7 @@ A program to predict neutralization titration reaction which studied and develop
 ### v1.0.0-alpha
 
 - Initial release
+
+### v1.0.1-alpha
+
+- We can calculate when [OH<sup>-</sup>] remains. (by assuming [H<sup>+</sup>] = -[OH<sup>-</sup>])
