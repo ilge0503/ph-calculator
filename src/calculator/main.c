@@ -110,10 +110,10 @@ int main() {
 
     for (i=0;i<nOther;i++) {
         printf("name of other solution : "); scanf("%s", name); iOther[i] = SpecifySolute(soluteList, name, nSolute); printf("\n");
-        printf("Volume of another solution in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); v=v+vol;
-        printf("Concentration of another solution : "); scanf("%s", tmp); cncnt=atof(tmp); printf("\n"); sOther[i]=vol*cncnt;
+        printf("Volume of other solution in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); v=v+vol;
+        printf("Concentration of other solution : "); scanf("%s", tmp); cncnt=atof(tmp); printf("\n"); sOther[i]=vol*cncnt;
     }
-    //initial concncnttration&acid constant
+    //initial concentration&acid constant
     //input ends here
 
     h = CalcInitialH(soluteList, nAcid, nBase, nOther, sAcidH, sBaseH, sOther, iOther, v);
