@@ -170,7 +170,7 @@ double CalculateTri(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
     x3 = pow(pH, 3);
     k1 = pow(10, IonizationFactor(soluteDataBase, iOther, 1));
     k2 = pow(10, IonizationFactor(soluteDataBase, iOther, 2));
-    k3 = pow(10, IonizationFactor(soluteDataBase, iOther, 2));
+    k3 = pow(10, IonizationFactor(soluteDataBase, iOther, 3));
     result = (cen*((k1*x2)+(2*k1*k2*x1)+(3*k1*k2*k3)))/(x3+(k1*x2)+(k1*k2*x1)+(k1*k2*k3));
     return result;
 }
@@ -262,7 +262,7 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     int i;
     int nAcid, nBase, nOther, iOther[MAX_SOLUTION_NUMBER];
     double vAll, h, vol, cen, sAcidH[MAX_SOLUTION_NUMBER], sBaseH[MAX_SOLUTION_NUMBER], sOther[MAX_SOLUTION_NUMBER];
-    double volAdding, volPerTime, volAdded, cenAdded;
+    double volAdding, volPerTime, cenAdded;
 
     char result[6];
 
