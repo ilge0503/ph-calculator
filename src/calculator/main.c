@@ -1,3 +1,4 @@
+
 /*
 version : v1.1.0-alpha
 
@@ -36,7 +37,7 @@ SOFTWARE.
 #define MAX_SOLUTION_NUMBER 255
 #define CALCULATOR_PRECISION 0.001
 
-int SpecifySolute(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], char* name, int nSolute);
+int SpecifySolute(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nSolute, char* name);
 double CalcInitialH(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nAcid, int nBase, int nOther, double* sAcidH, double* sBaseH, double sOther[], int iOther[], double v);
 double CalculatePolyproticAcid(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sOther, int iOther, double pH, double v);
 double CalculateMono(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sOther, int iOther, double pH, double v);
@@ -48,7 +49,7 @@ double FindAnswer(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], 
 int main() {
     int i, j, k;
     int nAcid, nBase, nOther, iOther[MAX_SOLUTION_NUMBER], nSolute;
-    double v, h, vol, cncnt, sAcidH[MAX_SOLUTION_NUMBER], sBaseH[MAX_SOLUTION_NUMBER], sOther[MAX_SOLUTION_NUMBER];
+    double vAll, h, vol, cen, sAcidH[MAX_SOLUTION_NUMBER], sBaseH[MAX_SOLUTION_NUMBER], sOther[MAX_SOLUTION_NUMBER];
 
     char tmp[MAX_NUMBER_LENGTH], name[MAX_DATA_LENGTH] = { 0, };
 
@@ -92,44 +93,46 @@ int main() {
 
     printf("\n");
 
-    v=0;
+    vAll=0;
 
-    printf("Volume of pure water in liter : "); scanf("%s", tmp); v=atof(tmp); printf("\n");
+    printf("Volume of pure water in liter : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n");
     //Get total volume(in liter)
 
     printf("\n");
 
     for(i=0;i<nAcid;i++) {
-        printf("Volume of strong monoprotic acid in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); v=v+vol;
-        printf("Concentration of strong monoprotic acid : "); scanf("%s", tmp); cncnt=atof(tmp); printf("\n"); sAcidH[i]=cncnt*vol;
+        printf("Volume of strong monoprotic acid in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of strong monoprotic acid : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sAcidH[i]=cen*vol;
     }
     for(i=0;i<nBase;i++) {
-        printf("Volume of strong base in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); v=v+vol;
-        printf("Concentration of strong base : "); scanf("%s", tmp); cncnt=atof(tmp); printf("\n"); sBaseH[i]=cncnt*vol;
+        printf("Volume of strong base in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of strong base : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sBaseH[i]=cen*vol;
     }
 
     for (i=0;i<nOther;i++) {
-        printf("name of other solution : "); scanf("%s", name); iOther[i] = SpecifySolute(soluteList, name, nSolute); printf("\n");
-        printf("Volume of other solution in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); v=v+vol;
-        printf("Concentration of other solution : "); scanf("%s", tmp); cncnt=atof(tmp); printf("\n"); sOther[i]=vol*cncnt;
+        printf("name of other solution : "); scanf("%s", name); iOther[i] = SpecifySolute(soluteList, nSolute, name); printf("\n");
+        if (iOther[i] == -1) return -1;
+        printf("Volume of other solution in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of other solution : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sOther[i]=vol*cen;
     }
     //initial concentration&acid constant
     //input ends here
 
-    h = CalcInitialH(soluteList, nAcid, nBase, nOther, sAcidH, sBaseH, sOther, iOther, v);
+    h = CalcInitialH(soluteList, nAcid, nBase, nOther, sAcidH, sBaseH, sOther, iOther, vAll);
 
-    printf("%.3lf", FindAnswer(soluteList, h, nOther, sOther, iOther, v, -3, 18, CALCULATOR_PRECISION, 1));
+    printf("%.3lf", FindAnswer(soluteList, h, nOther, sOther, iOther, vAll, -3, 18, CALCULATOR_PRECISION, 1));
 
     return 0;
 }
 
-int SpecifySolute(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], char* name, int nSolute) {
+int SpecifySolute(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nSolute, char* name) {
     int i;
-    for (i=0; i<NUMBER_OF_SOLUTE; i++) {
+    for (i=0; i<nSolute; i++) {
         if (strncmp(&list[i][0][0], &name[0], MAX_DATA_LENGTH) == 0) {
             return i;
         }
     }
+    printf("ERR : invalid solution name");
     return -1;
 }
 
@@ -178,35 +181,35 @@ double CalculatePolyproticAcid(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_D
 }
 
 double CalculateMono(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sOther, int iOther, double pH, double v) {
-    double cncnt, x1, k1, result;
-    cncnt = sOther/v;
+    double cen, x1, k1, result;
+    cen = sOther/v;
     x1 = pH;
     k1 = pow(10, IonizationFactor(list, iOther, 1));
-    result = (cncnt*k1)/(x1+k1);
+    result = (cen*k1)/(x1+k1);
     return result;
 }
 
 double CalculateDi(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sOther, int iOther, double pH, double v) {
-    double cncnt, x1, x2, k1, k2, result;
-    cncnt = sOther/v;
+    double cen, x1, x2, k1, k2, result;
+    cen = sOther/v;
     x1 = pH;
     x2 = pow(pH, 2);
     k1 = pow(10, IonizationFactor(list, iOther, 1));
     k2 = pow(10, IonizationFactor(list, iOther, 2));
-    result = (cncnt*((k1*x1)+(2*k1*k2)))/(x2+(k1*x1)+(k1*k2));
+    result = (cen*((k1*x1)+(2*k1*k2)))/(x2+(k1*x1)+(k1*k2));
     return result;
 }
 
 double CalculateTri(char list[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sOther, int iOther, double pH, double v) {
-    double cncnt, x1, x2, x3, k1, k2, k3, result;
-    cncnt = sOther/v;
+    double cen, x1, x2, x3, k1, k2, k3, result;
+    cen = sOther/v;
     x1 = pH;
     x2 = pow(pH, 2);
     x3 = pow(pH, 3);
     k1 = pow(10, IonizationFactor(list, iOther, 1));
     k2 = pow(10, IonizationFactor(list, iOther, 2));
     k3 = pow(10, IonizationFactor(list, iOther, 2));
-    result = (cncnt*((k1*x2)+(2*k1*k2*x1)+(3*k1*k2*k3)))/(x3+(k1*x2)+(k1*k2*x1)+(k1*k2*k3));
+    result = (cen*((k1*x2)+(2*k1*k2*x1)+(3*k1*k2*k3)))/(x3+(k1*x2)+(k1*k2*x1)+(k1*k2*k3));
     return result;
 }
 
