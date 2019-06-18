@@ -17,3 +17,7 @@ A program to predict neutralization titration reaction which studied and develop
 ### v1.1.0-alpha
 
 - We can now calculate weak acids, weak bases and polyprotic acids.
+
+### v1.1.1-alpha
+
+- We can now generate a Neutralization titration graph.
