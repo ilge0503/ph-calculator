@@ -12,6 +12,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="86fe9375-3e89-4a4c-bdd9-5cec8d44f123" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/calculator.dir/main.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/calculator.dir/main.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/calculator" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/calculator" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -31,7 +34,7 @@
         <entry file="file://$PROJECT_DIR$/solute.pcd">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="27" selection-start-column="18" selection-end-column="27" />
+              <caret column="1214" selection-start-column="1214" selection-end-column="1229" />
             </state>
           </provider>
         </entry>
@@ -39,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="196" column="17" selection-start-line="196" selection-start-column="17" selection-end-line="196" selection-end-column="17" />
+            <state relative-caret-position="402">
+              <caret line="361" column="36" lean-forward="true" selection-start-line="361" selection-start-column="36" selection-end-line="361" selection-end-column="36" />
               <folding>
                 <element signature="e#1117#1135#0" expanded="true" />
               </folding>
@@ -53,10 +56,10 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>H2PO4(-)</find>
-      <find>H3PO4</find>
       <find>CH3COO</find>
       <find>tri</find>
       <find>calculatetri</find>
+      <find>H3PO4</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -141,17 +144,19 @@
       <workItem from="1560842372711" duration="8000" />
       <workItem from="1560842735180" duration="28000" />
       <workItem from="1560844120092" duration="6010000" />
+      <workItem from="1560852729033" duration="1528000" />
+      <workItem from="1560855142875" duration="22000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11196000" />
+    <option name="totallyTimeSpent" value="12746000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="841" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13519314" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13805436" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -195,21 +200,21 @@
     <entry file="file://$PROJECT_DIR$/solute.pcd">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="27" selection-start-column="18" selection-end-column="27" />
+          <caret column="1214" selection-start-column="1214" selection-end-column="1229" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/result.pcd">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="6" lean-forward="true" selection-end-line="151" />
+        <state relative-caret-position="529">
+          <caret line="114" column="6" lean-forward="true" selection-end-line="121" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="196" column="17" selection-start-line="196" selection-start-column="17" selection-end-line="196" selection-end-column="17" />
+        <state relative-caret-position="402">
+          <caret line="361" column="36" lean-forward="true" selection-start-line="361" selection-start-column="36" selection-end-line="361" selection-end-column="36" />
           <folding>
             <element signature="e#1117#1135#0" expanded="true" />
           </folding>

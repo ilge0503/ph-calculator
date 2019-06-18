@@ -356,7 +356,7 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 
             for (i=0; i<=volAdding/volPerTime; i++) {
                 result[0] = "      ";
-                sOther[nBase - 1] = cenAdded * volPerTime * i;
+                sOther[nOther - 1] = cenAdded * volPerTime * i;
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nOther, sAcidH, sBaseH, sOther, iOther, vAll + volPerTime * i);
                 gcvt(FindAnswer(soluteDataBase, h, nOther, sOther, iOther, vAll + volPerTime * i, -3, 18, CALCULATOR_PRECISION, 1), 6, result);
                 fputs(result, file);
