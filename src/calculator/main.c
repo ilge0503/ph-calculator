@@ -1,5 +1,5 @@
 /*
-version : v1.1.2-alpha
+version : v1.1.3-alpha
 
 MIT License
 
@@ -54,10 +54,11 @@ double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_
 double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, int nRest, double* sRest, int* iRest, double v, double nStart, double nEnd, double precision, double interval);
 int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
 int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
-int NeutralPointFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
+int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
 
 
 int main() {
+    printf("INFO : Program started\n");
     int i, j, k, nSolute;
     char tmp, soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH] = { 0, };
 
@@ -83,18 +84,18 @@ int main() {
     fclose(file);
 
 
-    printf("INFO : solution data Loaded successfully\n");
+    printf("INFO : Solution data Loaded successfully\n");
 
-    printf("Select calculation type you want [pH-calculator : 0 | graph-generator : 1 | neutral-point-finder : 2] : ");scanf("%c", &tmp); printf("\n"); fflush(stdin);
+    printf("Select calculation type you want [pH-calculator : 0 | graph-generator : 1 | recipe-finder : 2] : ");scanf("%c", &tmp); printf("\n"); fflush(stdin);
     switch (tmp) {
         case '0' :
             return PhCalculator(soluteDataBase, nSolute);
         case '1' :
             return GraphGenerator(soluteDataBase, nSolute);
         case '2' :
-            return NeutralPointFinder(soluteDataBase, nSolute);
+            return RecipeFinder(soluteDataBase, nSolute);
         default :
-            printf("ERR : invalid calculation type");
+            printf("ERR : Invalid calculation type");
             return -1;
     }
 }
@@ -106,7 +107,7 @@ int SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
             return i;
         }
     }
-    printf("ERR : invalid solution name");
+    printf("ERR : Invalid solution name");
     return -1;
 }
 
@@ -147,7 +148,7 @@ double CalculatePolyproticAcid(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_D
             result = CalculateTri(soluteDataBase, sRest, iRest, pH, v);
             break;
         default :
-            printf("ERR : error occured while calculating %d other solution", iRest);
+            printf("ERR : Error occured while calculating %d the solution", iRest);
             result = 0;
             break;
     }
@@ -215,53 +216,50 @@ double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 }
 
 int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute) {
+    printf("INFO : PhCalculator function started\n");
     int i;
     int nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
     double vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER];
 
     char tmp[MAX_NUMBER_LENGTH], name[MAX_DATA_LENGTH] = { 0, };
 
-    printf("Number of strong monoprotic acids : "); scanf("%s", tmp); nAcid=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly acidic monoprotic solutions : "); scanf("%s", tmp); nAcid=atoi(tmp); printf("\n"); fflush(stdin);
     if (0>nAcid || nAcid>255) {
-        printf("ERR : invalid nAcid numbers");
+        printf("ERR : Invalid nAcid numbers");
         return 1;
     }
-    printf("Number of strong bases : "); scanf("%s", tmp); nBase=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly basic solutions : "); scanf("%s", tmp); nBase=atoi(tmp); printf("\n"); fflush(stdin);
     if (0>nBase || nBase>255) {
-        printf("ERR : invalid nBase numbers");
+        printf("ERR : Invalid nBase numbers");
         return 1;
     }
-    printf("Number of the rests : "); scanf("%s", tmp); nRest=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of the other solutions : "); scanf("%s", tmp); nRest=atoi(tmp); printf("\n"); fflush(stdin);
     if (0>nRest || nRest>255) {
-        printf("ERR : invalid oSolution numbers");
+        printf("ERR : Invalid nRest numbers");
         return 1;
     }
-    //Get number of acids and bases
 
-    printf("\n");
+    printf("\n\n");
 
-    printf("Volume of pure water in liter : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n");
-    //Get total volume(in liter)
+    printf("Volume of pure water (L) : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n");
 
-    printf("\n");
+    printf("\n\n");
 
     for(i=0;i<nAcid;i++) {
-        printf("Volume of strong monoprotic acid in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
-        printf("Concentration of strong monoprotic acid : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sAcid[i]=cen*vol;
+        printf("Volume of strongly acidic monoprotic solution (L) : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); printf("\n\n"); sAcid[i]=cen*vol;
     }
     for(i=0;i<nBase;i++) {
-        printf("Volume of strong base in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
-        printf("Concentration of strong base : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sBase[i]=cen*vol;
+        printf("Volume of strongly basic solution (L) : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); printf("\n\n"); sBase[i]=cen*vol;
     }
 
     for (i=0;i<nRest;i++) {
-        printf("name of other solution : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
+        printf("Name of another solution : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
         if (iRest[i] == -1) return -1;
-        printf("Volume of other solution in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
-        printf("Concentration of other solution : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sRest[i]=vol*cen;
+        printf("Volume of the solution (L) : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); printf("\n\n"); sRest[i]=vol*cen;
     }
-    //initial concentration&acid constant
-    //input ends here
 
     h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll);
 
@@ -271,6 +269,7 @@ int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
 }
 
 int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute) {
+    printf("INFO : GraphGenerator function started\n");
     int i;
     int nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
     double vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER];
@@ -280,60 +279,55 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 
     char tmp[MAX_NUMBER_LENGTH], name[MAX_DATA_LENGTH] = { 0, };
 
-    printf("Number of target_pH strong monoprotic acids : "); scanf("%s", tmp); nAcid=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly acidic monoprotic titrands : "); scanf("%s", tmp); nAcid=atoi(tmp); printf("\n"); fflush(stdin);
     if (0>nAcid || nAcid>255) {
-        printf("ERR : invalid nAcid numbers");
+        printf("ERR : Invalid nAcid number\n");
         return 1;
     }
-    printf("Number of target_pH strong bases : "); scanf("%s", tmp); nBase=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly basic titrands : "); scanf("%s", tmp); nBase=atoi(tmp); printf("\n"); fflush(stdin);
     if (0>nBase || nBase>255) {
-        printf("ERR : invalid nBase numbers");
+        printf("ERR : Invalid nBase number\n");
         return 1;
     }
-    printf("Number of the target_pH rests : "); scanf("%s", tmp); nRest=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of the other titrands : "); scanf("%s", tmp); nRest=atoi(tmp); printf("\n"); fflush(stdin);
     if (0>nRest || nRest>255) {
-        printf("ERR : invalid oSolution numbers");
+        printf("ERR : Invalid nRest number\n");
         return 1;
     }
-    //Get number of target_pH acids and bases
 
-    printf("\n");
+    printf("\n\n");
 
-    printf("Volume of pure water in liter : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n");
-    //Get total volume(in liter)
+    printf("Volume of pure water (L) : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n");
 
-    printf("\n");
+    printf("\n\n");
 
     for(i=0;i<nAcid;i++) {
-        printf("Volume of target_pH strong monoprotic acid in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
-        printf("Concentration of target_pH strong monoprotic acid : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sAcid[i]=cen*vol;
+        printf("Volume of strongly acidic monoprotic titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); printf("\n\n"); sAcid[i]=cen*vol;
     }
     for(i=0;i<nBase;i++) {
-        printf("Volume of target_pH strong base in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
-        printf("Concentration of target_pH strong base : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sBase[i]=cen*vol;
+        printf("Volume of strongly basic titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); printf("\n\n"); sBase[i]=cen*vol;
     }
 
     for (i=0;i<nRest;i++) {
-        printf("name of other target_pH solution : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
+        printf("Name of another titrand : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
         if (iRest[i] == -1) return -1;
-        printf("Volume of other target_pH solution in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
-        printf("Concentration of other target_pH solution : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sRest[i]=vol*cen;
+        printf("Volume of the titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); printf("\n\n"); sRest[i]=vol*cen;
     }
-    //initial concentration&acid constant
-    //input ends here
 
-    printf("\n");
-    printf("\n");
+    printf("\n\n");
 
-    printf("Type of solution to be added [strong monoprotic acid : 0 | strong base : 1 | the rests : 2] : "); scanf("%s", tmp); printf("\n"); fflush(stdin);
+    printf("Type of titrant [strong monoprotic acid : 0 | strong base : 1 | the other : 2] : "); scanf("%s", tmp); printf("\n"); fflush(stdin);
     FILE* file;
     file = fopen("../result.pcd", "w");
     switch (tmp[0]) {
         case '0' :
             nAcid++;
-            printf("Volume of adding strong monoprotic acid to be added in liter : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n");
-            printf("Volume of adding strong monoprotic acid to be added at a time in liter : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n");
-            printf("Concentration of adding strong monoprotic acid : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n");
+            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n");
+            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n");
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n");
 
             for (i=0; i<=volAdding/volPerTime; i++) {
                 result[0] = "      ";
@@ -346,9 +340,9 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
             break;
         case '1' :
             nBase++;
-            printf("Volume of adding strong base to be added in liter : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n");
-            printf("Volume of adding strong base to be added at a time in liter : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n");
-            printf("Concentration of adding strong base : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n");
+            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n");
+            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n");
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n");
 
             for (i=0; i<=volAdding/volPerTime; i++) {
                 result[0] = "      ";
@@ -361,10 +355,11 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
             break;
         case '2' :
             nRest++;
-            printf("name of other adding solution : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
-            printf("Volume of other adding solution to be added in liter : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n");
-            printf("Volume of other adding solution to be added at a time in liter : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n");
-            printf("Concentration of other adding solution : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n");
+            printf("Name of the titrant : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
+            if (iRest[i] == -1) return -1;
+            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n");
+            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n");
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n");
 
             for (i=0; i<=volAdding/volPerTime; i++) {
                 result[0] = "      ";
@@ -376,82 +371,79 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
             }
             break;
         default :
-            printf("ERR : invalid solution type");
+            printf("ERR : Invalid solution type");
             return 1;
     }
 
     fclose(file);
 
-    printf("Graph has been generated.");
+    printf("INFO : Graph has been generated.");
 
     return 0;
 }
 
-int NeutralPointFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute) {
-    printf("INFO : NeutralPointFinder function started\n");
+int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute) {
+    printf("INFO : RecipeFinder function started\n");
     int i;
     int nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
     double pH, vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER], error, target_pH;
-    double cenAdding;
+    double cenTitrant;
 
     char tmp[MAX_NUMBER_LENGTH], name[MAX_DATA_LENGTH] = { 0, };
 
-    printf("Number of target_pH strong monoprotic acids : "); scanf("%s", tmp); nAcid=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly acidic monoprotic titrands : "); scanf("%s", tmp); nAcid=atoi(tmp); printf("\n"); fflush(stdin);
     if (0>nAcid || nAcid>255) {
         printf("ERR : Invalid nAcid number\n");
         return 1;
     }
-    printf("Number of target_pH strong bases : "); scanf("%s", tmp); nBase=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly basic titrands : "); scanf("%s", tmp); nBase=atoi(tmp); printf("\n"); fflush(stdin);
     if (0>nBase || nBase>255) {
         printf("ERR : Invalid nBase number\n");
         return 1;
     }
-    printf("Number of the target_pH rests : "); scanf("%s", tmp); nRest=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of the other titrands : "); scanf("%s", tmp); nRest=atoi(tmp); printf("\n"); fflush(stdin);
     if (0>nRest || nRest>255) {
         printf("ERR : Invalid nRest number\n");
         return 1;
     }
-    //Get number of target_pH acids and bases
 
-    printf("\n");
+    printf("\n\n");
 
-    printf("Volume of pure water in liter : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n");
-    //Get total volume(in liter)
+    printf("Volume of pure water (L) : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n");
 
-    printf("\n");
+    printf("\n\n");
 
     for(i=0;i<nAcid;i++) {
-        printf("Volume of target_pH strong monoprotic acid in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
-        printf("Concentration of target_pH strong monoprotic acid : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sAcid[i]=cen*vol;
+        printf("Volume of strongly acidic monoprotic titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); printf("\n\n"); sAcid[i]=cen*vol;
     }
     for(i=0;i<nBase;i++) {
-        printf("Volume of target_pH strong base in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
-        printf("Concentration of target_pH strong base : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sBase[i]=cen*vol;
+        printf("Volume of strongly basic titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); printf("\n\n"); sBase[i]=cen*vol;
     }
 
     for (i=0;i<nRest;i++) {
-        printf("Name of rest target_pH solution : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
+        printf("Name of another titrand : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
         if (iRest[i] == -1) return -1;
-        printf("Volume of rest target_pH solution in liter : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
-        printf("Concentration of rest target_pH solution : "); scanf("%s", tmp); cen=atof(tmp); printf("\n"); sRest[i]=vol*cen;
+        printf("Volume of the titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); printf("\n"); vAll=vAll+vol;
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); printf("\n\n"); sRest[i]=vol*cen;
     }
-    //initial concentration&acid constant
-    //input ends here
 
-    printf("\n");
-    printf("\n");
+    printf("\n\n");
 
-    printf("target pH : "); scanf("%s", tmp); target_pH=atof(tmp); printf("\n");
+    printf("Target pH : "); scanf("%s", tmp); target_pH=atof(tmp); printf("\n");
 
-    printf("Type of solution to be added [strong monoprotic acid : 0 | strong base : 1 | the rests : 2] : "); scanf("%s", tmp); printf("\n"); fflush(stdin);
+    printf("\n\n");
+
+    printf("Type of titrant [strong monoprotic acid : 0 | strong base : 1 | the other : 2] : "); scanf("%s", tmp); printf("\n"); fflush(stdin);
     i=0;
     switch (tmp[0]) {
         case '0' :
             nAcid++;
-            printf("Concentration of adding strong monoprotic acid : "); scanf("%s", tmp); cenAdding=atof(tmp); printf("\n");
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=atof(tmp); printf("\n");
 
             do {
-                sAcid[nAcid - 1] = cenAdding * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
+                sAcid[nAcid - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i);
                 pH = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
 
@@ -462,10 +454,10 @@ int NeutralPointFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX
             break;
         case '1' :
             nBase++;
-            printf("Concentration of adding strong base : "); scanf("%s", tmp); cenAdding=atof(tmp); printf("\n");
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=atof(tmp); printf("\n");
 
             do {
-                sBase[nBase - 1] = cenAdding * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
+                sBase[nBase - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i);
                 pH = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
 
@@ -476,12 +468,13 @@ int NeutralPointFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX
             break;
         case '2' :
             nRest++;
-            printf("name of other adding solution : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
-            printf("Concentration of rest adding solution  : "); scanf("%s", tmp); cenAdding=atof(tmp); printf("\n");
+            printf("Name of the titrant : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
+            if (iRest[i] == -1) return -1;
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=atof(tmp); printf("\n");
 
             do {
-                sRest[nRest - 1] = cenAdding * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
-                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sRest, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i);
+                sRest[nRest - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
+                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i);
                 pH = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
 
                 error = fabs(pH - target_pH);
@@ -493,6 +486,6 @@ int NeutralPointFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX
             printf("ERR : Invalid solution type\n");
             return -1;
     }
-    printf("m : %.6lf | pH : %.3lf | error : %.3lf\n", NEUTRALPOINT_FINDER_INTERVAL * vAll * (i-1), pH, error);
+    printf("volume : %.6lf | pH : %.3lf | error : %.3lf\n", NEUTRALPOINT_FINDER_INTERVAL * vAll * (i-1), pH, error);
     return 0;
 }

@@ -25,3 +25,8 @@ A program to predict neutralization titration reaction which studied and develop
 ### v1.1.2-alpha
 
 - Add equivalence-point-finder.
+
+### v1.1.3-alpha
+
+- Rename the equivalence-point-finder function to recipe-finder function.
+- Modify the output messages.
