@@ -21,3 +21,7 @@ A program to predict neutralization titration reaction which studied and develop
 ### v1.1.1-alpha
 
 - We can now generate a Neutralization titration graph.
+
+### v1.1.2-alpha
+
+- We can now find equivalence point.
