@@ -30,3 +30,8 @@ A program to predict neutralization titration reaction which studied and develop
 
 - Rename the equivalence-point-finder function to recipe-finder function.
 - Modify the output messages.
+
+### v1.1.4-alpha
+
+- Solve the infinite loop problem that occurred in recipe-finder function.
+- Improve the accuracy of recipe-finder function.

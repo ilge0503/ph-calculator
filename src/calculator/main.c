@@ -1,5 +1,5 @@
 /*
-version : v1.1.3-alpha
+version : v1.1.4-alpha
 
 MIT License
 
@@ -39,7 +39,6 @@ SOFTWARE.
 #define PH_CALCULATOR_ENDPOINT 18
 #define PH_CALCULATOR_PRECISION 0.001
 #define PH_CALCULATOR_INITIALINTERVAL 1
-#define NEUTRALPOINT_FINDER_PRECISION 0.0001
 #define NEUTRALPOINT_FINDER_INTERVAL 0.001
 //Specify settings used for calculations and operations
 
@@ -234,7 +233,7 @@ double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     }   //Locate the point where the error is minimized within the search scope.
 
     if (interval>precision) return CalculatePH(soluteDataBase, h, nRest, sRest, iRest, v, ans-interval, ans+interval, precision, interval*0.1);
-    //If the search interval is greater than the allowable error, narrow down the search interval to re-discover both sides of the point.
+        //If the search interval is greater than the allowable error, narrow down the search interval to re-discover both sides of the point.
     else return ans;
     //If the search interval is less than or equal to an acceptable error, return the result.
 }
@@ -422,7 +421,7 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
     printf("INFO : RecipeFinder function started\n");
 
     int i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
-    double pH, vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER], error, target_pH, cenTitrant;
+    double pH[2], vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER], error[2], target_pH, cenTitrant;
     char tmp[MAX_NUMBER_LENGTH], name[MAX_DATA_LENGTH] = { 0, };
     //Declare the variables needed to operate the function.
 
@@ -474,7 +473,7 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
     printf("Type of titrant [strong monoprotic acid : 0 | strong base : 1 | the other : 2] : "); scanf("%s", tmp); printf("\n"); fflush(stdin);
     //Get type of titrant.
 
-    i=0;
+    i=0; error[1]=1024;
     switch (tmp[0]) {
         case '0' :
             nAcid++;
@@ -482,14 +481,17 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
             //Get data of strongly acidic monoprotic titrant.
 
             do {
+                error[0] = error[1];
+                pH[0] = pH[1];
+
                 sAcid[nAcid - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i);
-                pH = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
+                pH[1] = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
 
-                error = fabs(pH-target_pH);
+                error[1] = fabs(pH[1] - target_pH);
 
                 i++;
-            } while (error>NEUTRALPOINT_FINDER_PRECISION);
+            } while (error[1] <= error[0]);
             //Perform titration experimental simulation execute according to the prescribed rule until reach target pH value.
 
             break;
@@ -500,14 +502,17 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
             //Get data of strongly basic titrant.
 
             do {
+                error[0] = error[1];
+                pH[0] = pH[1];
+
                 sBase[nBase - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i);
-                pH = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
+                pH[1] = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
 
-                error = fabs(pH-target_pH);
+                error[1] = fabs(pH[1] - target_pH);
 
                 i++;
-            } while (error>NEUTRALPOINT_FINDER_PRECISION);
+            } while (error[1] <= error[0]);
             //Perform titration experimental simulation execute according to the prescribed rule until reach target pH value.
 
             break;
@@ -520,14 +525,17 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
             //Get data of the other titrant.
 
             do {
+                error[0] = error[1];
+                pH[0] = pH[1];
+
                 sRest[nRest - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i);
-                pH = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
+                pH[1] = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * vAll * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
 
-                error = fabs(pH - target_pH);
+                error[1] = fabs(pH[1] - target_pH);
 
                 i++;
-            } while (error>NEUTRALPOINT_FINDER_PRECISION);
+            } while (error[1] <= error[0]);
             //Perform titration experimental simulation execute according to the prescribed rule until reach target pH value.
 
             break;
@@ -539,7 +547,7 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
 
     printf("\n\n");
 
-    printf("volume : %.3lf | pH : %.3lf | error : %.3lf\n", NEUTRALPOINT_FINDER_INTERVAL * vAll * (i-1), pH, error);
+    printf("volume : %.3lf | pH : %.3lf | error : %.3lf\n", NEUTRALPOINT_FINDER_INTERVAL * vAll * (i-2), pH[0], error[0]);
     //Print out the founded recipe.
 
     return 0;
