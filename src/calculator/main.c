@@ -38,13 +38,14 @@ SOFTWARE.
 #define PH_CALCULATOR_ENDPOINT 18
 #define PH_CALCULATOR_PRECISION 0.001
 #define PH_CALCULATOR_INITIALINTERVAL 1
-#define NEUTRALPOINT_FINDER_PRECISION 0.001
+#define NEUTRALPOINT_FINDER_PRECISION 0.0001
 #define NEUTRALPOINT_FINDER_INTERVAL 0.001
 
+#define HFactor(soluteDataBase, index) atoi(soluteDataBase[index][1])
+#define NumIonization(soluteDataBase, index) atoi(soluteDataBase[index][2])
+#define IonizationFactor(soluteDataBase, index, time) -atof(soluteDataBase[index][2+time])
 
 int SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nSolute, char* name);
-int NumIonization(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int index);
-double IonizationFactor(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int index, int time);
 double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nAcid, int nBase, int nRest, double* sAcid, double* sBase, double* sRest, int* iRest, double v);
 double CalculatePolyproticAcid(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v);
 double CalculateMono(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v);
@@ -55,7 +56,6 @@ double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
 int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
 int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
-
 
 int main() {
     printf("INFO : Program started\n");
@@ -109,18 +109,6 @@ int SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
     }
     printf("ERR : Invalid solution name");
     return -1;
-}
-
-int HFactor(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int index) {
-    return atoi(soluteDataBase[index][1]);
-}
-
-int NumIonization(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int index) {
-    return atoi(soluteDataBase[index][2]);
-}
-
-double IonizationFactor(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int index, int time) {
-    return -atof(soluteDataBase[index][2+time]);
 }
 
 double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nAcid, int nBase, int nRest, double* sAcid, double* sBase, double* sRest, int* iRest, double v) {
@@ -356,7 +344,7 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
         case '2' :
             nRest++;
             printf("Name of the titrant : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
-            if (iRest[i] == -1) return -1;
+            if (iRest[nRest-1] == -1) return -1;
             printf("Volume of the titrant (L) : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n");
             printf("Volume of the titrant (L) : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n");
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n");
@@ -382,7 +370,7 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     return 0;
 }
 
-int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute) {
+int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nSolute) {
     printf("INFO : RecipeFinder function started\n");
     int i;
     int nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
