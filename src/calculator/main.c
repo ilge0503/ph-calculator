@@ -497,7 +497,7 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
         case '1' :
             nBase++;
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=atof(tmp); printf("\n");
-            //Get data of strongly basic titrands.
+            //Get data of strongly basic titrant.
 
             do {
                 sBase[nBase - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * vAll * i;
