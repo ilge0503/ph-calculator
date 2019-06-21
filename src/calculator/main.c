@@ -37,10 +37,10 @@ SOFTWARE.
 #define MAX_SOLUTION_NUMBER 255
 #define PH_CALCULATOR_STARTPOINT -3
 #define PH_CALCULATOR_ENDPOINT 18
-#define PH_CALCULATOR_PRECISION 0.0001
+#define PH_CALCULATOR_PRECISION 0.001
 #define PH_CALCULATOR_INITIALINTERVAL 1
 #define NEUTRALPOINT_FINDER_PRECISION 0.0001
-#define NEUTRALPOINT_FINDER_INTERVAL 0.0001
+#define NEUTRALPOINT_FINDER_INTERVAL 0.001
 //Specify settings used for calculations and operations
 
 #define HFactor(soluteDataBase, index) atoi(soluteDataBase[index][1])
@@ -539,7 +539,7 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
 
     printf("\n\n");
 
-    printf("volume : %.6lf | pH : %.3lf | error : %.3lf\n", NEUTRALPOINT_FINDER_INTERVAL * vAll * (i-1), pH, error);
+    printf("volume : %.3lf | pH : %.3lf | error : %.3lf\n", NEUTRALPOINT_FINDER_INTERVAL * vAll * (i-1), pH, error);
     //Print out the founded recipe.
 
     return 0;
