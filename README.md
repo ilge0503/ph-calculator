@@ -35,3 +35,8 @@ A program to predict neutralization titration reaction which studied and develop
 
 - Solve the infinite loop problem that occurred in recipe-finder function.
 - Improve the accuracy of recipe-finder function.
+
+### v1.1.5-alpha
+
+- Remove the danger of buffer overflow.
+- Modify the output message of recipe-finder.

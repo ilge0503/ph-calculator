@@ -1,5 +1,5 @@
 /*
-version : v1.1.4-alpha
+version : v1.1.5-alpha
 
 MIT License
 
@@ -43,28 +43,28 @@ SOFTWARE.
 #define NEUTRALPOINT_FINDER_INTERVAL 0.001
 //Specify settings used for calculations and operations
 
-#define HFactor(soluteDataBase, index) atoi(soluteDataBase[index][1])
-#define NumIonization(soluteDataBase, index) atoi(soluteDataBase[index][2])
-#define IonizationFactor(soluteDataBase, index, time) -atof(soluteDataBase[index][2+time])
+#define HFactor(soluteDataBase, index) strtol(soluteDataBase[index][1], NULL, 10)
+#define NumIonization(soluteDataBase, index) strtol(soluteDataBase[index][2], NULL, 10)
+#define IonizationFactor(soluteDataBase, index, time) -strtod(soluteDataBase[index][2+time], NULL)
 //Declare macros approaching the database.
 
-int SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nSolute, char* name);
-double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nAcid, int nBase, int nRest, double* sAcid, double* sBase, double* sRest, int* iRest, double v);
-double CalculatePolyproticAcid(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v);
-double CalculateMono(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v);
-double CalculateDi(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v);
-double CalculateTri(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v);
-double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, int nRest, double* sRest, int* iRest, double pH, double v);
-double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, int nRest, double* sRest, int* iRest, double v, double nStart, double nEnd, double precision, double interval);
-int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
-int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
-int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute);
+long SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute, char* name);
+double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nAcid, long nBase, long nRest, double* sAcid, double* sBase, double* sRest, long* iRest, double v);
+double CalculatePolyproticAcid(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v);
+double CalculateMono(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v);
+double CalculateDi(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v);
+double CalculateTri(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v);
+double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double* sRest, long* iRest, double pH, double v);
+double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double* sRest, long* iRest, double v, double nStart, double nEnd, double precision, double interval);
+long PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute);
+long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute);
+long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute);
 //Declare the function prototypes
 
-int main() {
+long main() {
     printf("INFO : Program started\n");
 
-    int i, j, k, nSolute;
+    long i, j, k, nSolute;
     char tmp, soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH] = { 0, };
     //Declare the variables needed to operate the function.
 
@@ -109,8 +109,8 @@ int main() {
     }   //Specify the function to execute, and call the function.
 }
 
-int SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nSolute, char* name) {
-    int i;
+long SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute, char* name) {
+    long i;
     //Declare the variables needed to operate the function.
 
     for (i=0; i<nSolute; i++) {
@@ -123,8 +123,8 @@ int SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
     return -1;
 }
 
-double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nAcid, int nBase, int nRest, double* sAcid, double* sBase, double* sRest, int* iRest, double v) {
-    int i;
+double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nAcid, long nBase, long nRest, double* sAcid, double* sBase, double* sRest, long* iRest, double v) {
+    long i;
     double h = 0;
     //Declare the variables needed to operate the function.
 
@@ -137,7 +137,7 @@ double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
     return h;   //Return the result.
 }
 
-double CalculatePolyproticAcid(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v) {
+double CalculatePolyproticAcid(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v) {
     double result;
     //Declare the variables needed to operate the function.
 
@@ -162,7 +162,7 @@ double CalculatePolyproticAcid(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_D
     return result;  //Return the result.
 }
 
-double CalculateMono(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v) {
+double CalculateMono(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v) {
     double cen, x1, k1, result;
     //Declare the variables needed to operate the function.
 
@@ -175,7 +175,7 @@ double CalculateMono(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_D
     return result;  //Return the result.
 }
 
-double CalculateDi(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v) {
+double CalculateDi(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v) {
     double cen, x1, x2, k1, k2, result;
     //Declare the variables needed to operate the function.
 
@@ -190,7 +190,7 @@ double CalculateDi(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     return result;  //Return the result.
 }
 
-double CalculateTri(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, int iRest, double pH, double v) {
+double CalculateTri(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v) {
     double cen, x1, x2, x3, k1, k2, k3, result;
     //Declare the variables needed to operate the function.
 
@@ -207,8 +207,8 @@ double CalculateTri(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
     return result;  //Return the result.
 }
 
-double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, int nRest, double* sRest, int* iRest, double pH, double v) {
-    int i;
+double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double* sRest, long* iRest, double pH, double v) {
+    long i;
     double result=h+(pow(10.0, -14)/pH);
     //Declare the variables needed to operate the function.
 
@@ -219,7 +219,7 @@ double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_
     return fabs(pH-result); //Return the error between value received and the result.
 }
 
-double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, int nRest, double* sRest, int* iRest, double v, double nStart, double nEnd, double precision, double interval) {
+double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double* sRest, long* iRest, double v, double nStart, double nEnd, double precision, double interval) {
     double pH, tmp, lowest, ans;
     //Declare the variables needed to operate the function.
 
@@ -239,25 +239,25 @@ double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     //If the search interval is less than or equal to an acceptable error, return the result.
 }
 
-int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute) {
+long PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute) {
     printf("INFO : PhCalculator function started\n");
 
-    int i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
+    long i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
     double vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER];
     char tmp[MAX_NUMBER_LENGTH], name[MAX_DATA_LENGTH] = { 0, };
     //Declare the variables needed to operate the function.
 
-    printf("Number of strongly acidic monoprotic solutions : "); scanf("%s", tmp); nAcid=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly acidic monoprotic solutions : "); scanf("%s", tmp); nAcid=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nAcid || nAcid>255) {
         printf("ERR : Invalid nAcid number\n");
         return -1;
     }   //Get the number of strongly acidic monoprotic solutions.
-    printf("Number of strongly basic solutions : "); scanf("%s", tmp); nBase=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly basic solutions : "); scanf("%s", tmp); nBase=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nBase || nBase>255) {
         printf("ERR : Invalid nBase number\n");
         return -1;
     }   //Get the number of strongly basic solutions.
-    printf("Number of the other solutions : "); scanf("%s", tmp); nRest=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of the other solutions : "); scanf("%s", tmp); nRest=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nRest || nRest>255) {
         printf("ERR : Invalid nRest number\n");
         return -1;
@@ -265,25 +265,25 @@ int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
 
     printf("\n\n");
 
-    printf("Volume of pure water (L) : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n"); fflush(stdin);
+    printf("Volume of pure water (L) : "); scanf("%s", tmp); vAll=strtod(tmp, NULL); printf("\n"); fflush(stdin);
     //Get volume of pure water.
 
     printf("\n\n");
 
     for(i=0;i<nAcid;i++) {
-        printf("Volume of strongly acidic monoprotic solution (L) : "); scanf("%s", tmp); vol=atof(tmp); vAll=vAll+vol; printf("\n"); fflush(stdin);
-        printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); sAcid[i]=cen*vol; printf("\n\n"); fflush(stdin);
+        printf("Volume of strongly acidic monoprotic solution (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
+        printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sAcid[i]=cen*vol; printf("\n\n"); fflush(stdin);
     }   //Get data of strongly acidic monoprotic solutions.
     for(i=0;i<nBase;i++) {
-        printf("Volume of strongly basic solution (L) : "); scanf("%s", tmp); vol=atof(tmp); vAll=vAll+vol; printf("\n"); fflush(stdin);
-        printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); sBase[i]=cen*vol; printf("\n\n"); fflush(stdin);
+        printf("Volume of strongly basic solution (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
+        printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sBase[i]=cen*vol; printf("\n\n"); fflush(stdin);
     }   //Get data of strongly basic solutions.
 
     for (i=0;i<nRest;i++) {
         printf("Name of another solution : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
         if (iRest[i] == -1) return -1;
-        printf("Volume of the solution (L) : "); scanf("%s", tmp); vol=atof(tmp); vAll=vAll+vol; printf("\n"); fflush(stdin);
-        printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); sRest[i]=vol*cen; printf("\n\n"); fflush(stdin);
+        printf("Volume of the solution (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
+        printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sRest[i]=vol*cen; printf("\n\n"); fflush(stdin);
     }   //Get data of the solutions.
 
     printf("\n");
@@ -295,25 +295,25 @@ int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
     return 0;
 }
 
-int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], nSolute) {
+long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute) {
     printf("INFO : GraphGenerator function started\n");
 
-    int i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
-    double vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER], volAdding, volPerTime, cenAdded;
+    long i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
+    double vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER], volPerTime, volTitrant, cenTitrant;
     char result[6], tmp[MAX_NUMBER_LENGTH], name[MAX_DATA_LENGTH] = { 0, };
     //Declare the variables needed to operate the function.
 
-    printf("Number of strongly acidic monoprotic titrands : "); scanf("%s", tmp); nAcid=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly acidic monoprotic titrands : "); scanf("%s", tmp); nAcid=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nAcid || nAcid>255) {
         printf("ERR : Invalid nAcid number\n");
         return -1;
     }   //Get the number of strongly acidic monoprotic titrands.
-    printf("Number of strongly basic titrands : "); scanf("%s", tmp); nBase=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly basic titrands : "); scanf("%s", tmp); nBase=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nBase || nBase>255) {
         printf("ERR : Invalid nBase number\n");
         return -1;
     }   //Get the number of strongly basic titrands.
-    printf("Number of the other titrands : "); scanf("%s", tmp); nRest=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of the other titrands : "); scanf("%s", tmp); nRest=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nRest || nRest>255) {
         printf("ERR : Invalid nRest number\n");
         return -1;
@@ -321,24 +321,24 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 
     printf("\n\n");
 
-    printf("Volume of pure water (L) : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n"); fflush(stdin);
+    printf("Volume of pure water (L) : "); scanf("%s", tmp); vAll=strtod(tmp, NULL); printf("\n"); fflush(stdin);
     //Get volume of pure water.
 
     printf("\n\n");
 
     for(i=0;i<nAcid;i++) {
-        printf("Volume of strongly acidic monoprotic titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); vAll=vAll+vol; printf("\n"); fflush(stdin);
-        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); sAcid[i]=cen*vol; printf("\n\n"); fflush(stdin);
+        printf("Volume of strongly acidic monoprotic titrand (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sAcid[i]=cen*vol; printf("\n\n"); fflush(stdin);
     }   //Get data of strongly acidic monoprotic titrands.
     for(i=0;i<nBase;i++) {
-        printf("Volume of strongly basic titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); vAll=vAll+vol; printf("\n"); fflush(stdin);
-        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); sBase[i]=cen*vol; printf("\n\n"); fflush(stdin);
+        printf("Volume of strongly basic titrand (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sBase[i]=cen*vol; printf("\n\n"); fflush(stdin);
     }   //Get data of strongly basic titrands.
     for (i=0;i<nRest;i++) {
         printf("Name of another titrand : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
         if (iRest[i] == -1) return -1;
-        printf("Volume of the titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); vAll=vAll+vol; printf("\n"); fflush(stdin);
-        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); sRest[i]=vol*cen; printf("\n\n"); fflush(stdin);
+        printf("Volume of the titrand (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sRest[i]=vol*cen; printf("\n\n"); fflush(stdin);
     }   //Get data of the titrands.
 
     printf("\n");
@@ -351,14 +351,14 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     switch (tmp[0]) {
         case '0' :
             nAcid++;
-            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n"); fflush(stdin);
-            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n"); fflush(stdin);
-            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n"); fflush(stdin);
+            printf("Volume of the titrant per experiment (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             //Get data of strongly acidic monoprotic titrant.
 
-            for (i=0; i<=volAdding/volPerTime; i++) {
+            for (i=0; i<=volTitrant/volPerTime; i++) {
                 result[0] = "      ";
-                sAcid[nAcid-1]=cenAdded*volPerTime*i;
+                sAcid[nAcid-1]=cenTitrant*volPerTime*i;
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+volPerTime*i);
                 gcvt(CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll+volPerTime*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, 1), 6, result);
                 fputs(result, file);
@@ -369,14 +369,14 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 
         case '1' :
             nBase++;
-            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n"); fflush(stdin);
-            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n"); fflush(stdin);
-            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n"); fflush(stdin);
+            printf("Volume of the titrant per experiment (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             //Get data of strongly basic titrands.
 
-            for (i=0; i<=volAdding/volPerTime; i++) {
+            for (i=0; i<=volTitrant/volPerTime; i++) {
                 result[0] = "      ";
-                sBase[nBase - 1] = cenAdded * volPerTime * i;
+                sBase[nBase - 1] = cenTitrant * volPerTime * i;
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + volPerTime * i);
                 gcvt(CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + volPerTime * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, 1), 6, result);
                 fputs(result, file);
@@ -389,14 +389,14 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
             nRest++;
             printf("Name of the titrant : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
             if (iRest[nRest-1] == -1) return -1;
-            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volAdding=atof(tmp); printf("\n"); fflush(stdin);
-            printf("Volume of the titrant (L) : "); scanf("%s", tmp); volPerTime=atof(tmp); printf("\n"); fflush(stdin);
-            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenAdded=atof(tmp); printf("\n"); fflush(stdin);
+            printf("Volume of the titrant per experiment (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             //Get data of the other titrant.
 
-            for (i=0; i<=volAdding/volPerTime; i++) {
+            for (i=0; i<=volTitrant/volPerTime; i++) {
                 result[0] = "      ";
-                sRest[nRest - 1] = cenAdded * volPerTime * i;
+                sRest[nRest - 1] = cenTitrant * volPerTime * i;
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + volPerTime * i);
                 gcvt(CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + volPerTime * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, 1), 6, result);
                 fputs(result, file);
@@ -418,25 +418,25 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     return 0;
 }
 
-int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], int nSolute) {
+long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute) {
     printf("INFO : RecipeFinder function started\n");
 
-    int i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
-    double pH[2], vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER], error[2], target_pH, cenTitrant;
+    long i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
+    double vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER], cenTitrant, target_pH, error[2], pH[2];
     char tmp[MAX_NUMBER_LENGTH], name[MAX_DATA_LENGTH] = { 0, };
     //Declare the variables needed to operate the function.
 
-    printf("Number of strongly acidic monoprotic titrands : "); scanf("%s", tmp); nAcid=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly acidic monoprotic titrands : "); scanf("%s", tmp); nAcid=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nAcid || nAcid>255) {
         printf("ERR : Invalid nAcid number\n");
         return -1;
     }   //Get the number of strongly acidic monoprotic titrands.
-    printf("Number of strongly basic titrands : "); scanf("%s", tmp); nBase=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of strongly basic titrands : "); scanf("%s", tmp); nBase=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nBase || nBase>255) {
         printf("ERR : Invalid nBase number\n");
         return -1;
     }   //Get the number of strongly basic titrands.
-    printf("Number of the other titrands : "); scanf("%s", tmp); nRest=atoi(tmp); printf("\n"); fflush(stdin);
+    printf("Number of the other titrands : "); scanf("%s", tmp); nRest=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nRest || nRest>255) {
         printf("ERR : Invalid nRest number\n");
         return -1;
@@ -444,29 +444,29 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
 
     printf("\n\n");
 
-    printf("Volume of pure water (L) : "); scanf("%s", tmp); vAll=atof(tmp); printf("\n");
+    printf("Volume of pure water (L) : "); scanf("%s", tmp); vAll=strtod(tmp, NULL); printf("\n");
     //Get volume of pure water.
 
     printf("\n\n");
 
     for(i=0;i<nAcid;i++) {
-        printf("Volume of strongly acidic monoprotic titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); vAll=vAll+vol; printf("\n"); fflush(stdin);
-        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); sAcid[i]=cen*vol;  printf("\n\n"); fflush(stdin);
+        printf("Volume of strongly acidic monoprotic titrand (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sAcid[i]=cen*vol;  printf("\n\n"); fflush(stdin);
     }   //Get data of strongly acidic monoprotic titrands.
     for(i=0;i<nBase;i++) {
-        printf("Volume of strongly basic titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); vAll=vAll+vol; printf("\n"); fflush(stdin);
-        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); sBase[i]=cen*vol; printf("\n\n"); fflush(stdin);
+        printf("Volume of strongly basic titrand (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sBase[i]=cen*vol; printf("\n\n"); fflush(stdin);
     }   //Get data of strongly basic titrands.
     for (i=0;i<nRest;i++) {
         printf("Name of another titrand : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
         if (iRest[i] == -1) return -1;
-        printf("Volume of the titrand (L) : "); scanf("%s", tmp); vol=atof(tmp); vAll=vAll+vol; printf("\n"); fflush(stdin);
-        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=atof(tmp); sRest[i]=vol*cen; printf("\n\n"); fflush(stdin);
+        printf("Volume of the titrand (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
+        printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sRest[i]=vol*cen; printf("\n\n"); fflush(stdin);
     }   //Get data of the titrands.
 
     printf("\n");
 
-    printf("Target pH : "); scanf("%s", tmp); target_pH=atof(tmp); printf("\n");
+    printf("Target pH : "); scanf("%s", tmp); target_pH=strtod(tmp, NULL); printf("\n");
     //Get target pH value.
 
     printf("\n\n");
@@ -478,7 +478,7 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
     switch (tmp[0]) {
         case '0' :
             nAcid++;
-            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=atof(tmp); printf("\n");
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n");
             //Get data of strongly acidic monoprotic titrant.
 
             while (1) {
@@ -500,7 +500,7 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
 
         case '1' :
             nBase++;
-            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=atof(tmp); printf("\n");
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n");
             //Get data of strongly basic titrant.
 
             while (1) {
@@ -524,7 +524,7 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
             nRest++;
             printf("Name of the titrant : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
             if (iRest[i] == -1) return -1;
-            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=atof(tmp); printf("\n");
+            printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n");
             //Get data of the other titrant.
 
             while (1) {
