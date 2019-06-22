@@ -351,7 +351,7 @@ long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
     switch (tmp[0]) {
         case '0' :
             nAcid++;
-            printf("Volume of the titrant per experiment (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Volume of the total titrant (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             //Get data of strongly acidic monoprotic titrant.
@@ -369,7 +369,7 @@ long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
 
         case '1' :
             nBase++;
-            printf("Volume of the titrant per experiment (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Volume of the total titrant (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             //Get data of strongly basic titrands.
@@ -389,7 +389,7 @@ long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
             nRest++;
             printf("Name of the titrant : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
             if (iRest[nRest-1] == -1) return -1;
-            printf("Volume of the titrant per experiment (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Volume of the total titrant (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             //Get data of the other titrant.
