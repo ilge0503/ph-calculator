@@ -37,9 +37,9 @@ SOFTWARE.
 #define MAX_SOLUTION_NUMBER 255
 #define PH_CALCULATOR_STARTPOINT -3
 #define PH_CALCULATOR_ENDPOINT 18
-#define PH_CALCULATOR_PRECISION 0.001
-#define PH_CALCULATOR_INITIALINTERVAL 1
 #define PH_CALCULATOR_PRECISION 0.0001
+#define PH_CALCULATOR_INITIALINTERVAL 1
+#define NEUTRALPOINT_FINDER_PRECISION 0.0001
 #define NEUTRALPOINT_FINDER_INTERVAL 0.001
 //Specify settings used for calculations and operations
 
@@ -493,7 +493,7 @@ long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
 
                 i++;
 
-                if (error[1] >= error[0] && (error[0] <= PH_CALCULATOR_PRECISION || error[1]-error[0] >= PH_CALCULATOR_PRECISION)) break;
+                if (error[1] >= error[0] && (error[0] <= NEUTRALPOINT_FINDER_PRECISION || error[1]-error[0] >= NEUTRALPOINT_FINDER_PRECISION)) break;
             }   //Perform titration experimental simulation execute according to the prescribed rule until reach target pH value.
 
             break;
@@ -515,7 +515,7 @@ long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
 
                 i++;
 
-                if (error[1] >= error[0] && (error[0] <= PH_CALCULATOR_PRECISION || error[1]-error[0] >= PH_CALCULATOR_PRECISION)) break;
+                if (error[1] >= error[0] && (error[0] <= NEUTRALPOINT_FINDER_PRECISION || error[1]-error[0] >= NEUTRALPOINT_FINDER_PRECISION)) break;
             }   //Perform titration experimental simulation execute according to the prescribed rule until reach target pH value.
 
             break;
@@ -539,7 +539,7 @@ long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
 
                 i++;
 
-                if (error[1] >= error[0] && (error[0] <= PH_CALCULATOR_PRECISION || error[1]-error[0] >= PH_CALCULATOR_PRECISION)) break;
+                if (error[1] >= error[0] && (error[0] <= NEUTRALPOINT_FINDER_PRECISION || error[1]-error[0] >= NEUTRALPOINT_FINDER_PRECISION)) break;
             }   //Perform titration experimental simulation execute according to the prescribed rule until reach target pH value.
 
             break;
