@@ -48,24 +48,24 @@ SOFTWARE.
 #define IonizationFactor(soluteDataBase, index, time) -strtod(soluteDataBase[index][2+time], NULL)
 //Declare macros approaching the database.
 
-long SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute, char* name);
-double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nAcid, long nBase, long nRest, double* sAcid, double* sBase, double* sRest, long* iRest, double v);
+long SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute, char const* name);
+double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nAcid, long nBase, long nRest, double const* sAcid, double const* sBase, double const* sRest, long const* iRest, double v);
 double CalculatePolyproticAcid(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v);
 double CalculateMono(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v);
 double CalculateDi(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v);
 double CalculateTri(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double sRest, long iRest, double pH, double v);
-double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double* sRest, long* iRest, double pH, double v);
-double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double* sRest, long* iRest, double v, double nStart, double nEnd, double precision, double interval);
-long PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute);
-long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute);
-long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute);
+double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double const* sRest, long const* iRest, double pH, double v);
+double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double const* sRest, long const* iRest, double v, double nStart, double nEnd, double precision, double interval);
+int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute);
+int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute);
+int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute);
 //Declare the function prototypes
 
-long main() {
+int main() {
     printf("INFO : Program started\n");
 
     long i, j, k, nSolute;
-    char tmp, soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH] = { 0, };
+    char tmp = 0x00, soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH] = { 0, };
     //Declare the variables needed to operate the function.
 
     printf("INFO : Loading solution data\n");
@@ -109,7 +109,7 @@ long main() {
     }   //Specify the function to execute, and call the function.
 }
 
-long SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute, char* name) {
+long SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute, char const* name) {
     long i;
     //Declare the variables needed to operate the function.
 
@@ -123,7 +123,7 @@ long SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     return -1;
 }
 
-double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nAcid, long nBase, long nRest, double* sAcid, double* sBase, double* sRest, long* iRest, double v) {
+double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nAcid, long nBase, long nRest, double const* sAcid, double const* sBase, double const* sRest, long const* iRest, double v) {
     long i;
     double h = 0;
     //Declare the variables needed to operate the function.
@@ -155,7 +155,7 @@ double CalculatePolyproticAcid(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_D
             break;
 
         default :
-            printf("ERR : Error occured while calculating %d the solution\n", iRest);
+            printf("ERR : Error occured while calculating %ld the solution\n", iRest);
             result = 0;
     }   //Classify polyprotic acid and call up the corresponding calculation function.
 
@@ -207,7 +207,7 @@ double CalculateTri(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
     return result;  //Return the result.
 }
 
-double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double* sRest, long* iRest, double pH, double v) {
+double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double const* sRest, long const* iRest, double pH, double v) {
     long i;
     double result=h+(pow(10.0, -14)/pH);
     //Declare the variables needed to operate the function.
@@ -219,18 +219,25 @@ double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_
     return fabs(pH-result); //Return the error between value received and the result.
 }
 
-double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double* sRest, long* iRest, double v, double nStart, double nEnd, double precision, double interval) {
-    double pH, tmp, lowest, ans;
+double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], double h, long nRest, double const* sRest, long const* iRest, double v, double nStart, double nEnd, double precision, double interval) {
+    double pH = 0, tmp, lowest, ans = -1;
     //Declare the variables needed to operate the function.
 
-    lowest = CalculateError(soluteDataBase, h, nRest, sRest, iRest, pow(10, -pH), v);
-    for (pH=nStart+interval;pH<nEnd;pH+=interval) {
+
+    lowest = CalculateError(soluteDataBase, h, nRest, sRest, iRest, pow(10, -nStart), v);
+
+    while (1) {
+        pH += interval;
+
         tmp = CalculateError(soluteDataBase, h, nRest, sRest, iRest, pow(10, -pH), v);
+
         if (tmp == -1) return -1;
         else if (tmp<lowest) {
             lowest = tmp;
             ans = pH;
         }
+
+        if (pH >= nEnd) break;
     }   //Locate the point where the error is minimized within the search scope.
 
     if (interval>precision) return CalculatePH(soluteDataBase, h, nRest, sRest, iRest, v, ans-interval, ans+interval, precision, interval*0.1);
@@ -239,7 +246,7 @@ double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     //If the search interval is less than or equal to an acceptable error, return the result.
 }
 
-long PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute) {
+int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute) {
     printf("INFO : PhCalculator function started\n");
 
     long i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
@@ -295,7 +302,7 @@ long PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
     return 0;
 }
 
-long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute) {
+int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute) {
     printf("INFO : GraphGenerator function started\n");
 
     long i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
@@ -439,7 +446,7 @@ long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
     return 0;
 }
 
-long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute) {
+int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute) {
     printf("INFO : RecipeFinder function started\n");
 
     long i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
