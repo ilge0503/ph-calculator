@@ -40,3 +40,7 @@ A program to predict neutralization titration reaction which studied and develop
 
 - Remove the danger of buffer overflow.
 - Modify the output message of recipe-finder.
+
+### v1.1.6-alpha
+
+- Eliminate the risk of potential errors in the graph-generator function.

@@ -1,5 +1,5 @@
 /*
-version : v1.1.5-alpha
+version : v1.1.6-alpha
 
 MIT License
 
@@ -299,7 +299,7 @@ long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
     printf("INFO : GraphGenerator function started\n");
 
     long i, nAcid, nBase, nRest, iRest[MAX_SOLUTION_NUMBER];
-    double vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER], volPerTime, volTitrant, cenTitrant;
+    double vAll, h, vol, cen, sAcid[MAX_SOLUTION_NUMBER], sBase[MAX_SOLUTION_NUMBER], sRest[MAX_SOLUTION_NUMBER], volPerTime, numAddTitrant, cenTitrant;
     char result[6], tmp[MAX_NUMBER_LENGTH], name[MAX_DATA_LENGTH] = { 0, };
     //Declare the variables needed to operate the function.
 
@@ -351,36 +351,50 @@ long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
     switch (tmp[0]) {
         case '0' :
             nAcid++;
-            printf("Volume of the total titrant (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Number of times to add titrant (times) : "); scanf("%s", tmp); numAddTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             //Get data of strongly acidic monoprotic titrant.
 
-            for (i=0; i<=volTitrant/volPerTime; i++) {
-                result[0] = "      ";
+            while (1) {
+                result[0] = 0x00;
+
                 sAcid[nAcid-1]=cenTitrant*volPerTime*i;
+
                 h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+volPerTime*i);
                 gcvt(CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll+volPerTime*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, 1), 6, result);
+
                 fputs(result, file);
                 fputs("\n", file);
+
+                i++;
+
+                if (i>=numAddTitrant) break;
             }   //Perform titration experimental simulation as instructed and store results in result.pcd.
 
             break;
 
         case '1' :
             nBase++;
-            printf("Volume of the total titrant (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Number of times to add titrant (times) : "); scanf("%s", tmp); numAddTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             //Get data of strongly basic titrands.
 
-            for (i=0; i<=volTitrant/volPerTime; i++) {
-                result[0] = "      ";
+            while (1) {
+                result[0] = 0x00;
+
                 sBase[nBase - 1] = cenTitrant * volPerTime * i;
-                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + volPerTime * i);
-                gcvt(CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + volPerTime * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, 1), 6, result);
+
+                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+volPerTime*i);
+                gcvt(CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll+volPerTime*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, 1), 6, result);
+
                 fputs(result, file);
                 fputs("\n", file);
+
+                i++;
+
+                if (i>=numAddTitrant) break;
             }   //Perform titration experimental simulation as instructed and store results in result.pcd.
 
             break;
@@ -389,18 +403,25 @@ long GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
             nRest++;
             printf("Name of the titrant : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
             if (iRest[nRest-1] == -1) return -1;
-            printf("Volume of the total titrant (L) : "); scanf("%s", tmp); volTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
+            printf("Number of times to add titrant (times) : "); scanf("%s", tmp); numAddTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             //Get data of the other titrant.
 
-            for (i=0; i<=volTitrant/volPerTime; i++) {
-                result[0] = "      ";
+            while (1) {
+                result[0] = 0x00;
+
                 sRest[nRest - 1] = cenTitrant * volPerTime * i;
-                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + volPerTime * i);
-                gcvt(CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + volPerTime * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, 1), 6, result);
+
+                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+volPerTime*i);
+                gcvt(CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll+volPerTime*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, 1), 6, result);
+
                 fputs(result, file);
                 fputs("\n", file);
+
+                i++;
+
+                if (i>=numAddTitrant) break;
             }   //Perform titration experimental simulation as instructed and store results in result.pcd.
 
             break;
@@ -485,9 +506,9 @@ long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
                 error[0] = error[1];
                 pH[0] = pH[1];
 
-                sAcid[nAcid - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * i;
-                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * i);
-                pH[1] = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
+                sAcid[nAcid - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL*i;
+                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+NEUTRALPOINT_FINDER_INTERVAL*i);
+                pH[1] = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll+NEUTRALPOINT_FINDER_INTERVAL*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
 
                 error[1] = fabs(pH[1] - target_pH);
 
@@ -507,9 +528,9 @@ long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
                 error[0] = error[1];
                 pH[0] = pH[1];
 
-                sBase[nBase - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * i;
-                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * i);
-                pH[1] = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
+                sBase[nBase - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL*i;
+                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+NEUTRALPOINT_FINDER_INTERVAL*i);
+                pH[1] = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll+NEUTRALPOINT_FINDER_INTERVAL*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
 
                 error[1] = fabs(pH[1] - target_pH);
 
@@ -531,9 +552,9 @@ long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
                 error[0] = error[1];
                 pH[0] = pH[1];
 
-                sRest[nRest - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL * i;
-                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * i);
-                pH[1] = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll + NEUTRALPOINT_FINDER_INTERVAL * i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
+                sRest[nRest - 1] = cenTitrant * NEUTRALPOINT_FINDER_INTERVAL*i;
+                h = CalcInitialH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+NEUTRALPOINT_FINDER_INTERVAL*i);
+                pH[1] = CalculatePH(soluteDataBase, h, nRest, sRest, iRest, vAll+NEUTRALPOINT_FINDER_INTERVAL*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_PRECISION, PH_CALCULATOR_INITIALINTERVAL);
 
                 error[1] = fabs(pH[1] - target_pH);
 
@@ -551,7 +572,7 @@ long RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA
 
     printf("\n\n");
 
-    printf("volume : %.3lf | pH : %.3lf | error : %.3lf\n", NEUTRALPOINT_FINDER_INTERVAL * (i-2), pH[0], error[0]);
+    printf("volume : %.3lf | pH : %.3lf | error : %.3lf\n", NEUTRALPOINT_FINDER_INTERVAL*(i-2), pH[0], error[0]);
     //Print out the founded recipe.
 
     return 0;
