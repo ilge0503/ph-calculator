@@ -44,3 +44,11 @@ A program to predict neutralization titration reaction which studied and develop
 ### v1.1.6-alpha
 
 - Eliminate the risk of potential errors in the graph-generator function.
+
+### v1.1.7-alpha
+
+- Separate the functions for calculation as a library.
+- Make the CalcInitialH function executed inside the CalculatePH function.
+- Eliminate some risks of potential errors in the recipe-finder function.
+- Change the path of the solute.pcd and result.pcd.
+- A little refactoring.
