@@ -52,3 +52,7 @@ A program to predict neutralization titration reaction which studied and develop
 - Eliminate some risks of potential errors in the recipe-finder function.
 - Change the path of the solute.pcd and result.pcd.
 - A little refactoring.
+
+### v1.1.8-alpha
+
+- Eliminate some risks of potential errors while loading DB.

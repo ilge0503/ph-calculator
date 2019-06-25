@@ -1,5 +1,5 @@
 /*
-version : v1.1.7-alpha
+version : v1.1.8-alpha
 
 MIT License
 

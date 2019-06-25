@@ -1,5 +1,5 @@
 /*
-version : v1.1.7-alpha
+version : v1.1.8-alpha
 
 MIT License
 
@@ -43,8 +43,13 @@ int main() {
 
     printf("INFO : Loading solution data\n");
 
-    FILE *file;
-    file = fopen("solute.pcd", "r");
+    FILE *file = fopen("solute.pcd", "r");
+
+    if (file==NULL) {
+        printf("ERR : Failed to open DB\n");
+        return -1;
+    }
+
     for (i=0; i<NUMBER_OF_SOLUTE; i++) {
         for (j = 0; j < NUMBER_OF_DATA; j++){
             for (k = 0; k < MAX_DATA_LENGTH; k++) {
@@ -65,7 +70,7 @@ int main() {
 
     printf("INFO : Solution data Loaded successfully\n");
 
-    printf("Select calculation type you want [pH-calculator : 0 | graph-generator : 1 | recipe-finder : 2] : ");scanf("%c", &tmp); printf("\n"); fflush(stdin);
+    printf("Select calculation type you want [pH-calculator : 0 | graph-generator : 1 | recipe-finder : 2] : "); scanf("%c", &tmp); printf("\n"); fflush(stdin);
     switch (tmp) {
         case '0' :
             return PhCalculator(soluteDataBase, nSolute);
