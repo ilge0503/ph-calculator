@@ -56,3 +56,7 @@ A program to predict neutralization titration reaction which studied and develop
 ### v1.1.8-alpha
 
 - Eliminate some risks of potential errors while loading DB.
+
+### v1.1.9-alpha
+
+- Eliminate the risk of potential error while generating graph.

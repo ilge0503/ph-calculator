@@ -1,5 +1,5 @@
 /*
-version : v1.1.8-alpha
+version : v1.1.9-alpha
 
 MIT License
 
@@ -43,9 +43,9 @@ int main() {
 
     printf("INFO : Loading solution data\n");
 
-    FILE *file = fopen("solute.pcd", "r");
+    FILE *soluteDataBaseFile = fopen("solute.pcd", "r");
 
-    if (file==NULL) {
+    if (soluteDataBaseFile==NULL) {
         printf("ERR : Failed to open DB\n");
         return -1;
     }
@@ -53,7 +53,7 @@ int main() {
     for (i=0; i<NUMBER_OF_SOLUTE; i++) {
         for (j = 0; j < NUMBER_OF_DATA; j++){
             for (k = 0; k < MAX_DATA_LENGTH; k++) {
-                tmp = fgetc(file);
+                tmp = fgetc(soluteDataBaseFile);
                 if (tmp == 0x7C) break;
                 else if (tmp == 0x20) break;
                 else if (tmp == EOF) break;
@@ -65,7 +65,7 @@ int main() {
         if (tmp == EOF) break;
     }
     nSolute = i;
-    fclose(file);
+    fclose(soluteDataBaseFile);
     //Get the database needed to operate the program.
 
     printf("INFO : Solution data Loaded successfully\n");
@@ -193,8 +193,14 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     printf("Type of titrant [strong monoprotic acid : 0 | strong base : 1 | the other : 2] : "); scanf("%s", tmp); printf("\n"); fflush(stdin);
     //Get type of titrant.
 
-    FILE* file;
-    file = fopen("result.pcd", "w");
+    FILE* resultGraphFile;
+    resultGraphFile = fopen("result.pcd", "w");
+
+    if (resultGraphFile==NULL) {
+        printf("ERR : Failed to open DB\n");
+        return -1;
+    }
+
     switch (tmp[0]) {
         case '0' :
             nAcid++;
@@ -211,8 +217,8 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 
                 gcvt(CalculatePH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+volPerTime*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_RESOLUTION, 1), 6, result);
 
-                fputs(result, file);
-                fputs("\n", file);
+                fputs(result, resultGraphFile);
+                fputs("\n", resultGraphFile);
 
                 i++;
 
@@ -236,8 +242,8 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 
                 gcvt(CalculatePH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+volPerTime*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_RESOLUTION, 1), 6, result);
 
-                fputs(result, file);
-                fputs("\n", file);
+                fputs(result, resultGraphFile);
+                fputs("\n", resultGraphFile);
 
                 i++;
 
@@ -263,8 +269,8 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 
                 gcvt(CalculatePH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll+volPerTime*i, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_RESOLUTION, 1), 6, result);
 
-                fputs(result, file);
-                fputs("\n", file);
+                fputs(result, resultGraphFile);
+                fputs("\n", resultGraphFile);
 
                 i++;
 
@@ -277,7 +283,7 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
             printf("ERR : Invalid solution type\n");
             return -1;
     }
-    fclose(file);
+    fclose(resultGraphFile);
 
     printf("\n\n");
 
