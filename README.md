@@ -60,3 +60,8 @@ A program to predict neutralization titration reaction which studied and develop
 ### v1.1.9-alpha
 
 - Eliminate the risk of potential error while generating graph.
+
+### v1.1.10-alpha
+
+- Fix a small error with escape condition in loop while generating graph.
+- Add some informational messages while calculating.

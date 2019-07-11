@@ -1,5 +1,5 @@
 /*
-version : v1.1.9-alpha
+version : v1.1.10-alpha
 
 MIT License
 
@@ -27,20 +27,24 @@ SOFTWARE.
 #include "pHCalc.h"
 
 long SpecifySolute(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nSolute, char const* name) {
+    printf("INFO : SpecifySolute function started\n");
     long i;
     //Declare the variables needed to operate the function.
 
     for (i=0; i<nSolute; i++) {
         if (strncmp(&soluteDataBase[i][0][0], &name[0], MAX_DATA_LENGTH) == 0) {
+            printf("INFO : SpecifySolute function ended\n");
             return i;
         }
     }   //Search the database and return the material's unique number.
 
     printf("ERR : Invalid solution name\n");
+    printf("INFO : SpecifySolute function ended\n");
     return -1;
 }
 
 double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nAcid, long nBase, long nRest, double const* sAcid, double const* sBase, double const* sRest, long const* iRest, double v) {
+    printf("INFO : CalcInitialH function started\n");
     long i;
     double h = 0;
     //Declare the variables needed to operate the function.
@@ -51,6 +55,7 @@ double CalcInitialH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DA
     h = h/v;
     //Calculate the initial hydrogen ion concentration.
 
+    printf("INFO : CalcInitialH function ended\n");
     return h;   //Return the result.
 }
 
@@ -137,6 +142,7 @@ double CalculateError(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_
 }
 
 double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_LENGTH], long nAcid, long nBase, long nRest, double const* sAcid, double const* sBase, double const* sRest, long const* iRest, double v, double nStart, double nEnd, double resolution, double interval) {
+    printf("\nINFO : CalculatePH function started\n");
     double pH = 0, tmp, lowest, ans = -1, h;
     //Declare the variables needed to operate the function.
 
@@ -158,8 +164,13 @@ double CalculatePH(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
         if (pH >= nEnd) break;
     }   //Locate the point where the error is minimized within the search scope.
 
+    printf("INFO : start-point = %.3lf | end-point = %.3lf | interval = %.4lf | pH = %.3lf | error = %.9lf\n", nStart, nEnd, interval, ans, lowest);
+
     if (interval>resolution) return CalculatePH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, v, ans-interval, ans+interval, resolution, interval*0.1);
         //If the search interval is greater than the allowable error, narrow down the search interval to re-discover both sides of the point.
-    else return ans;
+    else {
+        printf("\nINFO : CalculatePH function ended\n\n");
+        return ans;
+    }
     //If the search interval is less than or equal to an acceptable error, return the result.
 }

@@ -1,5 +1,5 @@
 /*
-version : v1.1.9-alpha
+version : v1.1.10-alpha
 
 MIT License
 
@@ -98,16 +98,19 @@ int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
     printf("Number of strongly acidic monoprotic solutions : "); scanf("%s", tmp); nAcid=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nAcid || nAcid>255) {
         printf("ERR : Invalid nAcid number\n");
+        printf("INFO : PhCalculator function ended\n");
         return -1;
     }   //Get the number of strongly acidic monoprotic solutions.
     printf("Number of strongly basic solutions : "); scanf("%s", tmp); nBase=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nBase || nBase>255) {
         printf("ERR : Invalid nBase number\n");
+        printf("INFO : PhCalculator function ended\n");
         return -1;
     }   //Get the number of strongly basic solutions.
     printf("Number of the other solutions : "); scanf("%s", tmp); nRest=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nRest || nRest>255) {
         printf("ERR : Invalid nRest number\n");
+        printf("INFO : PhCalculator function ended\n");
         return -1;
     }   //Get the number of the other solutions.
 
@@ -129,16 +132,20 @@ int PhCalculator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
 
     for (i=0;i<nRest;i++) {
         printf("Name of another solution : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
-        if (iRest[i] == -1) return -1;
+        if (iRest[i] == -1) {
+            printf("INFO : PhCalculator function ended\n");
+            return -1;
+        }
         printf("Volume of the solution (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
         printf("Concentration of the solution (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sRest[i]=vol*cen; printf("\n\n"); fflush(stdin);
     }   //Get data of the solutions.
 
     printf("\n");
 
-    printf("%.3lf", CalculatePH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_RESOLUTION, 1));
+    printf("%.3lf\n\n", CalculatePH(soluteDataBase, nAcid, nBase, nRest, sAcid, sBase, sRest, iRest, vAll, PH_CALCULATOR_STARTPOINT, PH_CALCULATOR_ENDPOINT, PH_CALCULATOR_RESOLUTION, 1));
     //Calculate and print out the pH value.
 
+    printf("INFO : PhCalculator function ended\n");
     return 0;
 }
 
@@ -153,16 +160,19 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     printf("Number of strongly acidic monoprotic titrands : "); scanf("%s", tmp); nAcid=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nAcid || nAcid>255) {
         printf("ERR : Invalid nAcid number\n");
+        printf("INFO : GraphGenerator function ended\n");
         return -1;
     }   //Get the number of strongly acidic monoprotic titrands.
     printf("Number of strongly basic titrands : "); scanf("%s", tmp); nBase=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nBase || nBase>255) {
         printf("ERR : Invalid nBase number\n");
+        printf("INFO : GraphGenerator function ended\n");
         return -1;
     }   //Get the number of strongly basic titrands.
     printf("Number of the other titrands : "); scanf("%s", tmp); nRest=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nRest || nRest>255) {
         printf("ERR : Invalid nRest number\n");
+        printf("INFO : GraphGenerator function ended\n");
         return -1;
     }   //Get the number of the other titrands.
 
@@ -183,7 +193,10 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
     }   //Get data of strongly basic titrands.
     for (i=0;i<nRest;i++) {
         printf("Name of another titrand : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
-        if (iRest[i] == -1) return -1;
+        if (iRest[i] == -1) {
+            printf("INFO : GraphGenerator function ended\n");
+            return -1;
+        }
         printf("Volume of the titrand (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
         printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sRest[i]=vol*cen; printf("\n\n"); fflush(stdin);
     }   //Get data of the titrands.
@@ -198,9 +211,11 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 
     if (resultGraphFile==NULL) {
         printf("ERR : Failed to open DB\n");
+        printf("INFO : GraphGenerator function ended\n");
         return -1;
     }
 
+    i=0;
     switch (tmp[0]) {
         case '0' :
             nAcid++;
@@ -256,7 +271,10 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
             nRest++;
 
             printf("Name of the titrant : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
-            if (iRest[nRest-1] == -1) return -1;
+            if (iRest[nRest-1] == -1) {
+                printf("INFO : GraphGenerator function ended\n");
+                return -1;
+            }
             printf("Number of times to add titrant (times) : "); scanf("%s", tmp); numAddTitrant=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
             printf("Volume of the titrant per time (L) : "); scanf("%s", tmp); volPerTime=strtod(tmp, NULL); printf("\n"); fflush(stdin);
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n"); fflush(stdin);
@@ -281,14 +299,16 @@ int GraphGenerator(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DAT
 
         default :
             printf("ERR : Invalid solution type\n");
+            printf("INFO : GraphGenerator function ended\n");
             return -1;
     }
     fclose(resultGraphFile);
 
     printf("\n\n");
 
-    printf("INFO : Graph has been generated\n");
+    printf("INFO : Graph has been generated\n\n");
 
+    printf("INFO : GraphGenerator function ended\n");
     return 0;
 }
 
@@ -303,16 +323,19 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
     printf("Number of strongly acidic monoprotic titrands : "); scanf("%s", tmp); nAcid=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nAcid || nAcid>255) {
         printf("ERR : Invalid nAcid number\n");
+        printf("INFO : RecipeFinder function ended\n");
         return -1;
     }   //Get the number of strongly acidic monoprotic titrands.
     printf("Number of strongly basic titrands : "); scanf("%s", tmp); nBase=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nBase || nBase>255) {
         printf("ERR : Invalid nBase number\n");
+        printf("INFO : RecipeFinder function ended\n");
         return -1;
     }   //Get the number of strongly basic titrands.
     printf("Number of the other titrands : "); scanf("%s", tmp); nRest=strtol(tmp, NULL, 10); printf("\n"); fflush(stdin);
     if (0>nRest || nRest>255) {
         printf("ERR : Invalid nRest number\n");
+        printf("INFO : RecipeFinder function ended\n");
         return -1;
     }   //Get the number of the other titrands.
 
@@ -333,7 +356,10 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
     }   //Get data of strongly basic titrands.
     for (i=0;i<nRest;i++) {
         printf("Name of another titrand : "); scanf("%s", name); iRest[i] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n"); fflush(stdin);
-        if (iRest[i] == -1) return -1;
+        if (iRest[i] == -1) {
+            printf("INFO : RecipeFinder function ended\n");
+            return -1;
+        }
         printf("Volume of the titrand (L) : "); scanf("%s", tmp); vol=strtod(tmp, NULL); vAll=vAll+vol; printf("\n"); fflush(stdin);
         printf("Concentration of the titrand (mol/L) : "); scanf("%s", tmp); cen=strtod(tmp, NULL); sRest[i]=vol*cen; printf("\n\n"); fflush(stdin);
     }   //Get data of the titrands.
@@ -365,11 +391,13 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
             if (titrand_pH<target_pH) {
                 if (titrant_pH<target_pH) {
                     printf("ERR : Invalid titrant\n");
+                    printf("INFO : RecipeFinder function ended\n");
                     return -1;
                 }
             } else if (titrand_pH>target_pH) {
                 if (titrant_pH>target_pH) {
                     printf("ERR : Invalid titrant\n");
+                    printf("INFO : RecipeFinder function ended\n");
                     return -1;
                 }
             }
@@ -404,11 +432,13 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
             if (titrand_pH<target_pH) {
                 if (titrant_pH<target_pH) {
                     printf("ERR : Invalid titrant\n");
+                    printf("INFO : RecipeFinder function ended\n");
                     return -1;
                 }
             } else if (titrand_pH>target_pH) {
                 if (titrant_pH>target_pH) {
                     printf("ERR : Invalid titrant\n");
+                    printf("INFO : RecipeFinder function ended\n");
                     return -1;
                 }
             }
@@ -433,7 +463,10 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
         case '2' :
             nRest++;
             printf("Name of the titrant : "); scanf("%s", name); iRest[nRest-1] = SpecifySolute(soluteDataBase, nSolute, name); printf("\n");
-            if (iRest[i] == -1) return -1;
+            if (iRest[i] == -1) {
+                printf("INFO : RecipeFinder function ended\n");
+                return -1;
+            }
             printf("Concentration of the titrant (mol/L) : "); scanf("%s", tmp); cenTitrant=strtod(tmp, NULL); printf("\n");
             //Get data of the other titrant.
 
@@ -445,11 +478,13 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
             if (titrand_pH<target_pH) {
                 if (titrant_pH<target_pH) {
                     printf("ERR : Invalid titrant\n");
+                    printf("INFO : RecipeFinder function ended\n");
                     return -1;
                 }
             } else if (titrand_pH>target_pH) {
                 if (titrant_pH>target_pH) {
                     printf("ERR : Invalid titrant\n");
+                    printf("INFO : RecipeFinder function ended\n");
                     return -1;
                 }
             }
@@ -467,20 +502,21 @@ int RecipeFinder(char soluteDataBase[NUMBER_OF_SOLUTE][NUMBER_OF_DATA][MAX_DATA_
                 i++;
 
                 if (error[1] > error[0] && (error[0] <= RECIPE_FINDER_RESOLUTION || error[1]-error[0] > RECIPE_FINDER_RESOLUTION)) break;
-                printf("volume : %.2lf | pH : %.3lf | error : %.3lf\n", accuracy*(i-2), pH[0], error[0]);
             }   //Perform titration experimental simulation execute according to the prescribed rule until reach target pH value.
 
             break;
 
         default :
             printf("ERR : Invalid solution type\n");
+            printf("INFO : RecipeFinder function ended\n");
             return -1;
     }
 
     printf("\n\n");
 
-    printf("volume : %.2lf | pH : %.3lf | error : %.3lf\n", accuracy*(i-2), pH[0], error[0]);
+    printf("volume : %.9lf | pH : %.3lf | error : %.3lf\n\n", accuracy*(i-2), pH[0], error[0]);
     //Print out the founded recipe.
 
+    printf("INFO : RecipeFinder function ended\n");
     return 0;
 }
