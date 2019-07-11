@@ -3,3 +3,4 @@
 cmake-build-debug/
 CMakeLists.txt
 result.pcd
+software-validation/
