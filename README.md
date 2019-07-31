@@ -1,7 +1,4 @@
 # ph-calculator
-
-## About
-
 The program to predict neutralization titration reaction which studied and developed in "Haksung High School" for the "2019 Science Exhibition" in South Korea.
 
 ## Patch Note
